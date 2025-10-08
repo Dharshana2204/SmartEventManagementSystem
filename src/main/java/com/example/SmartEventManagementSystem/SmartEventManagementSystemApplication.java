@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SmartEventManagementSystemApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SmartEventManagementSystemApplication.class, args);
+
+        SpringApplication.run(SmartEventManagementSystemApplication.class, args);
 	}
 
 }
