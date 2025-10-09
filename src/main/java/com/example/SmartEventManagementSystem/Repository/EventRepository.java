@@ -1,4 +1,13 @@
 package com.example.SmartEventManagementSystem.Repository;
 
-public interface EventRepository {
+import com.example.SmartEventManagementSystem.Entities.Event;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface EventRepository extends JpaRepository<Event, Integer> {
+    List<Event> findByCategoryName(String categoryName);
+    List<Event> findByIsTrendingTrue();
 }
