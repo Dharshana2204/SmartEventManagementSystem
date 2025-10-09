@@ -9,10 +9,12 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,10 +37,18 @@ public class User {
     @NotBlank(message = "Name Cannot be empty")
     private String name;
     @Enumerated(EnumType.STRING)
-    @Column(nullable=false)
+    @Column(name = "role", nullable=false, columnDefinition = "VARCHAR(20)")
     private Role role=Role.USER;
-    @ManyToMany(mappedBy = "user",cascade=CascadeType.ALL)
+    // registration is the owning side in Registration (many registrations belong to one user)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference("user-registrations")
     private List<Registration> registrations;
-    @ManyToMany(mappedBy = "event",cascade=CascadeType.ALL)
+    // events created/owned by this user - mappedBy 'user' in Event
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference("user-events")
     private List<Event> events;
+    // feedbacks left by this user
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference("user-feedbacks")
+    private List<Feedback> feedbacks;
 }

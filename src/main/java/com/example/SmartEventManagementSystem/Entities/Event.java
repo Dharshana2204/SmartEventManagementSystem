@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,11 +45,20 @@ public class Event {
     //Relation-Ship
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonBackReference("category-events")
     private Category category;
 
+    // owning side for the user who created/owns this event
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference("user-events")
+    private User user;
+
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @JsonManagedReference("event-registrations")
     private List<Registration> registrations;
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @JsonManagedReference("event-feedbacks")
     private List<Feedback> feedbacks;
 
 }
