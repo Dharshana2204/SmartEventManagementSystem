@@ -15,7 +15,9 @@ public class SecurityConfig {
         // Disable CSRF protection (useful for API testing with tools like Postman)
         http.csrf(csrf -> csrf.disable())
             // Allow all requests during development/testing so endpoints aren't blocked by Spring Security defaults
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+            .authorizeHttpRequests(auth -> auth.requestMatchers("/h2-console/**").permitAll().anyRequest().permitAll()).formLogin(login->login.disable())
+                .headers(headers->headers.frameOptions(frame->frame.disable()));
+
 
         // return the built security chain
         return http.build();
