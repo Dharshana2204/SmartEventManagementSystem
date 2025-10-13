@@ -6,6 +6,7 @@ import com.example.SmartEventManagementSystem.Entities.Event;
 import com.example.SmartEventManagementSystem.Exception.ResourceNotFoundException;
 import com.example.SmartEventManagementSystem.Repository.CatergoryRepository;
 import com.example.SmartEventManagementSystem.Repository.EventRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +16,14 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class EventService {
-    private final EventRepository eventRepository;
-    private final CatergoryRepository catergoryRepository;
+    @Autowired
+    private  EventRepository eventRepository;
+    private  CatergoryRepository catergoryRepository;
 
-    public EventService(EventRepository eventRepository, CatergoryRepository catergoryRepository) {
-        this.eventRepository = eventRepository;
-        this.catergoryRepository = catergoryRepository;
-    }
+//    public EventService(EventRepository eventRepository, CatergoryRepository catergoryRepository) {
+//        this.eventRepository = eventRepository;
+//        this.catergoryRepository = catergoryRepository;
+//    }
 
     public EventDTO createEvent(EventDTO dto) {
         Event event = mapToEntity(dto);

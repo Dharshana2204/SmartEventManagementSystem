@@ -31,7 +31,7 @@ public class User {
     @Column(nullable=false)
     @NotBlank(message = "Password Cannot be empty")
     @Size(min = 8,max = 20)
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "Password must be at least 8 characters, include letters and digits")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*[@])(?=.*\\d)[A-Za-z\\d].{8,}$", message = "Password must be at least 8 characters, include letters and digits")
     private String password;
     @Column(nullable=false)
     @NotBlank(message = "Name Cannot be empty")

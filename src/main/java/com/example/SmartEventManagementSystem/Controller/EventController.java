@@ -22,6 +22,11 @@ public class EventController {
         EventDTO created = eventService.createEvent(dto);
         return ResponseEntity.ok(created);
     }
+//    @PostMapping
+//    public EventDTO createEvent(@RequestBody EventDTO dto) {
+//         return eventService.createEvent(dto);
+
+
 
     @GetMapping
     public ResponseEntity<List<EventDTO>> getAll() {
