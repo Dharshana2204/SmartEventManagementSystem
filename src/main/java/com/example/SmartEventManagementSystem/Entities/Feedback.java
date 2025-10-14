@@ -1,11 +1,10 @@
 package com.example.SmartEventManagementSystem.Entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,7 +15,7 @@ public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Min(1) @Max(5)
+    @Size(min = 1, max = 5)
     private int rating;
     @Lob
     private String comment;
