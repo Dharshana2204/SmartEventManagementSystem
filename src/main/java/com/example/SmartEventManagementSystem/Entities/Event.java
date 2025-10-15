@@ -1,6 +1,7 @@
 package com.example.SmartEventManagementSystem.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -54,6 +55,7 @@ public class Event {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     @JsonBackReference
+    @JsonIgnore
     private Category category;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)

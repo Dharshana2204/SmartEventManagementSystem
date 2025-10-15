@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/event")
+@RequestMapping("/api/event")
 public class EventController {
 
     @Autowired
@@ -22,22 +22,8 @@ public class EventController {
 
     @Autowired
     private UserService userService; // to get user by ID or email
-
-    // GET all events - available for all users
-    @GetMapping
-    public List<Event> getAllEvents() {
-        return eventService.getAllEvents();
-    }
-
-    // GET event by ID - available for all users
-    @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
-        Event event = eventService.getEventById(id);
-        return ResponseEntity.ok(event);
-    }
-
     // CREATE event - ADMIN only
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Event> createEvent(
             @Valid @RequestBody EventDTO dto,
             @RequestHeader("userRole") String userRole,
@@ -48,30 +34,20 @@ public class EventController {
         return ResponseEntity.status(201).body(event);
     }
 
-    // UPDATE event - ADMIN only
-    @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(
-            @PathVariable Long id,
-            @Valid @RequestBody EventDTO dto,
-            @RequestHeader("userRole") String userRole,
-            @RequestHeader("userEmail") String userEmail) {
-
-        User user = userService.getUserByEmail(userEmail);
-        Event updatedEvent = eventService.updateEvent(id, dto, userRole, user);
-        return ResponseEntity.ok(updatedEvent);
+    // GET all events - available for all users
+    @GetMapping("/read")
+    public List<Event> getAllEvents() {
+        return eventService.getAllEvents();
     }
 
-    // DELETE event - ADMIN only
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEvent(
-            @PathVariable Long id,
-            @RequestHeader("userRole") String userRole) {
-
-        eventService.deleteEvent(id, userRole);
-        return ResponseEntity.noContent().build();
+    // GET event by ID - available for all users
+    @GetMapping("/read/{id}")
+    public ResponseEntity<Event> getEventById(@PathVariable Long id) {
+        Event event = eventService.getEventById(id);
+        return ResponseEntity.ok(event);
     }
 
-    // GET events by category
+    // GET events by categoryNmae
     @GetMapping("/category/{name}")
     public ResponseEntity<List<Event>> getEventsByCategoryName(@PathVariable String name) {
         List<Event> events = eventService.getEventsByCategoryName(name);
@@ -88,4 +64,29 @@ public class EventController {
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(events);
     }
+
+    // UPDATE event - ADMIN only
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Event> updateEvent(
+            @PathVariable Long id,
+            @Valid @RequestBody EventDTO dto,
+            @RequestHeader("userRole") String userRole,
+            @RequestHeader("userEmail") String userEmail) {
+
+        User user = userService.getUserByEmail(userEmail);
+        Event updatedEvent = eventService.updateEvent(id, dto, userRole, user);
+        return ResponseEntity.ok(updatedEvent);
+    }
+
+    // DELETE event - ADMIN only
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteEvent(
+            @PathVariable Long id,
+            @RequestHeader("userRole") String userRole) {
+
+        eventService.deleteEvent(id, userRole);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

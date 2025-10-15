@@ -1,6 +1,5 @@
 package com.example.SmartEventManagementSystem.Service;
 
-import com.example.SmartEventManagementSystem.Config.EmailConfig;
 import com.example.SmartEventManagementSystem.Entities.eventMode;
 //import com.example.SmartEventManagementSystem.Repository.EmailRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -15,7 +15,6 @@ public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long registrationId;
-    //private String status = "CONFIRMED";
     @Column(name = "registration_date")
     private LocalDateTime registrationDate = LocalDateTime.now();
 
