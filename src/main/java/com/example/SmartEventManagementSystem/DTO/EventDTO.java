@@ -19,7 +19,7 @@ public class EventDTO {
     private String eventTitle;
 
     @NotBlank(message = "Description is required")
-    private String eventDescription;;
+    private String eventDescription;
 
     @NotNull(message = "Event date is required")
     private LocalDateTime eventDate;
@@ -31,13 +31,12 @@ public class EventDTO {
     @NotNull(message = "Category ID is required")
     private Long categoryId;
 
-    // Venue / Location
     @NotBlank(message = "Venue name is required")
     private String venueName;
 
     @NotBlank(message = "City is required")
     private String venueCity;
+
     @NotNull(message = "Event mode is required (ONLINE, OFFLINE, HYBRID)")
     private eventMode mode;
-
 }

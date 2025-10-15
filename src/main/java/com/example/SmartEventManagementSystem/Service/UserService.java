@@ -1,8 +1,8 @@
 package com.example.SmartEventManagementSystem.Service;
 
+import com.example.SmartEventManagementSystem.DTO.UserDTO;
 import com.example.SmartEventManagementSystem.Entities.User;
 import com.example.SmartEventManagementSystem.Repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,32 +10,56 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
-    //Read all the user
+
+    // CREATE USER
+    public User createUser(UserDTO dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new RuntimeException("Email already exists: " + dto.getEmail());
+        }
+
+        User user = new User();
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setRoles(dto.getRoles());
+
+        return userRepository.save(user);
+    }
+
+    // GET ALL USERS
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-    //Create the user
-    public User createuser(User user) {
-        return userRepository.save(user);
+
+    //GET USER BY ID
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
     }
-    //Read User By id
-    public User getUserById(long id) {
-        return userRepository.findById(id).orElse(null);
+    //Get user by email
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found with Email: " + email));
     }
-    //Update user
-    public User updateUser(long id ,User user) {
-        return userRepository.findById(id).map(existingUser -> {
-            existingUser.setName(user.getName());
-            existingUser.setEmail(user.getEmail());
-            existingUser.setPassword(user.getPassword());
-            existingUser.setRoles(user.getRoles());
-            return userRepository.save(existingUser);
-        }).orElse(null);
+
+    //UPDATE USER
+    public User updateUser(Long id, UserDTO dto) {
+        User existing = getUserById(id);
+        existing.setName(dto.getName());
+        existing.setEmail(dto.getEmail());
+        existing.setPassword(dto.getPassword());
+        existing.setRoles(dto.getRoles());
+        return userRepository.save(existing);
     }
-    //Delete user
-    public void deleteuser(long id) {
-        userRepository.delete(getUserById(id));
+
+    // DELETE USER
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with ID: " + id);
+        }
+        userRepository.deleteById(id);
     }
 }

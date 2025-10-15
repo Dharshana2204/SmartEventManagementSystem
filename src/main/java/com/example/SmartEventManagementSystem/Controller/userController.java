@@ -1,13 +1,10 @@
 package com.example.SmartEventManagementSystem.Controller;
 
+import com.example.SmartEventManagementSystem.DTO.UserDTO;
 import com.example.SmartEventManagementSystem.Entities.User;
 import com.example.SmartEventManagementSystem.Repository.UserRepository;
 import com.example.SmartEventManagementSystem.Service.UserService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,31 +13,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class userController {
     @Autowired
     private UserService userservice;
+
+    @PostMapping("/create")
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO dto) {
+        User savedUser = userservice.createUser(dto);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
     @GetMapping
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userservice.getAllUsers(), HttpStatus.OK);
     }
-    @PostMapping("/create")
-    public User createuser(@Valid @RequestBody User user) {
-        return userservice.createuser(user);
-    }
+
+//    @GetMapping
+//    public ResponseEntity<List<User>> getAllUsers() {
+//        return ResponseEntity.ok(userservice.getAllUsers());
+//    }
     @GetMapping("/{id}")
-    public User getUser(@PathVariable long id) {
+    public User getUserById(@PathVariable long id) {
         return userservice.getUserById(id);
     }
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable long id, @RequestBody User user) {
-        return userservice.updateUser(id,user);
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO dto) {
+        return ResponseEntity.ok(userservice.updateUser(id, dto));
     }
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable long id) {
-        userservice.deleteuser(id);
+    public ResponseEntity<String> deleteUser(@PathVariable long id) {
+        userservice.deleteUser(id);
+        return ResponseEntity.ok("User deleted successfully.");
     }
-
-
 
 }

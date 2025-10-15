@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface RegistrationRepository extends JpaRepository<Registration,Long> {
     Optional<Registration> findByUserIdAndEventId(Long userId, Long eventId);
     List<Registration> findByEventMode(eventMode mode);
-    long countByEventId(int id);
+    long countByEventId(Long id);
+    long countByEventIdAndEventMode(Long eventID,eventMode mode);
+
 }
